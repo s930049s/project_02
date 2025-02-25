@@ -1,6 +1,9 @@
 import requests
 import json
 from urllib.parse import urlencode
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def fetch_market_data():
     """
@@ -71,25 +74,25 @@ if __name__ == "__main__":
         # Verify if high price is greater than low price
         verify_high_low(market_data)
 
-        print("Verification passed: high > low")
-        print(f"high = {market_data['high']:.2f}, low = {market_data['low']:.2f}")
+        logging.info("Verification passed: high > low")
+        logging.info(f"high = {market_data['high']:.2f}, low = {market_data['low']:.2f}")
         
     except AssertionError as ae:
         # verification failure exception
-        print(f"Verification failed: {str(ae)}")
+        logging.error(f"Verification failed: {str(ae)}")
 
     except KeyError as ke:
         # exception for missing fields in the data
-        print(f"Data error: Missing required field - {str(ke)}")
+        logging.error(f"Data error: Missing required field - {str(ke)}")
 
     except ValueError as ve:
         # exception for data type conversion failure
-        print(f"Data format error: Unable to convert data - {str(ve)}")
+        logging.error(f"Data format error: Unable to convert data - {str(ve)}")
 
     except requests.exceptions.RequestException as re:
         # API request-related exceptions
-        print(f"API request failed: {str(re)}")
+        logging.error(f"API request failed: {str(re)}")
 
     except Exception as e:
         # any unexpected exceptions
-        print(f"Unknown error: {str(e)}")
+        logging.error(f"Unknown error: {str(e)}")
